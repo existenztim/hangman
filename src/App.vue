@@ -3,7 +3,6 @@ import { ref } from "vue";
 import * as data from "./models/data";
 import { SecretWord } from "./models/splitWord";
 import { IpickedWord } from "./models/IpickedWord";
-//import { CharacterWord } from "./models/characterWord";
 
 const characters = data.characters.map((character) => ({
   letter: character,
@@ -16,12 +15,12 @@ const guessCount = ref(8);
 const hangManWord = ref<SecretWord>();
 
 function getRandomWordIndex(words: any) {
-  const randomIndex = Math.floor(Math.random() * words.length + 1);
+  const randomIndex = Math.floor(Math.random() * words.length);
   pickedWord.value = words[randomIndex];
-  console.log("pickedWord:",pickedWord.value)
-  if(pickedWord.value){
-  hangManWord.value = new SecretWord(randomIndex, pickedWord.value.word);
-}
+  console.log("pickedWord:", pickedWord.value);
+  if (pickedWord.value) {
+    hangManWord.value = new SecretWord(randomIndex, pickedWord.value.word);
+  }
   console.log("hangManWord:", hangManWord.value);
   console.log("pickedword:", pickedWord.value);
 }
@@ -29,25 +28,22 @@ function getRandomWordIndex(words: any) {
 getRandomWordIndex(words);
 
 const guessedBtn = (character: string) => {
-  // const characterExists = pickedWord.value.word.includes(character);
-  if(pickedWord.value) {
-  if (!pickedWord.value.word.includes(character)) {
-    guessCount.value--;
-  } else {
-    hangManWord.value.showed.forEach((show: boolean) => {
-      show.showed = true;
-    });
-    console.log(hangManWord.value.id);
-    hangManWord.value.showed = true;
-    // hangManWord.value.showed = true;
+  if (pickedWord.value) {
+    let foundMatch = false;
+
+    for (let i = 0; i < pickedWord.value.word.length; i++) {
+      if (pickedWord.value.word[i] === character) {
+        hangManWord.value.showed[i].showed = true;
+        foundMatch = true;
+      }
+    }
+
+    if (!foundMatch) {
+      guessCount.value--;
+    }
+
+    characters.find((char) => char.letter === character).guessed = true;
   }
-
-  characters.forEach((char) => {
-    char.showed = true;
-  });
-
-  characters.find((char) => char.letter === character).guessed = true;
-}
 };
 </script>
 
@@ -57,17 +53,17 @@ const guessedBtn = (character: string) => {
   <div class="hill"></div>
 
   <div class="letter-container">
-    <div v-for="letter in hangManWord?.word" class="letter">
-      <p v-if="hangManWord?.showed">{{ letter }}</p>
+    <div v-for="(letter, index) in hangManWord?.word" class="letter">
+      <p v-if="hangManWord?.showed && hangManWord.showed[index]?.showed">{{ letter }}</p>
     </div>
   </div>
 
   <div v-if="guessCount > 0" class="button-container">
     <div class="secret-word-container"></div>
     <button
-      v-for="(character, index) in characters"
+      v-for="(character) in characters"
       :key="character.letter"
-      @click="guessedBtn(character.letter, index)"
+      @click="guessedBtn(character.letter)"
       :disabled="character.guessed"
     >
       {{ character.letter }}
@@ -77,6 +73,7 @@ const guessedBtn = (character: string) => {
     <h2>Gubben är hängd 😥</h2>
   </div>
 </template>
+
 
 
 
