@@ -1,3 +1,6 @@
 export class SecretWord {
-    constructor(public id: number){}
+    showed: boolean
+    constructor(public id: number, public word: string){
+        this.showed = false
+    }
 }

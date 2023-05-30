@@ -1,5 +1,5 @@
-import { CharacterLetter } from "./characterLetter";
+import { InputLetter } from "./inputLetter";
 
 export interface IcharacterProp {
-    prop: CharacterLetter
+    prop: InputLetter
 }

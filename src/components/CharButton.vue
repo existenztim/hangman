@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import LetterButtons from './LetterButtons.vue';
-import { CharacterLetter } from '../models/characterLetter';
+import { InputLetter } from '../models/inputLetter';
 //import { IcharacterProp } from '../models/IcharacterProp';
 
 //const props = defineProps<IcharacterProp>()
 //const {test} = defineProps(["characters"]);
 
-const characters = ref<CharacterLetter[]>()
+const characters = ref<InputLetter[]>()
 
 // const buttonPress = (character:string) => {
 //   console.log(character);

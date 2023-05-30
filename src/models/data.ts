@@ -3,6 +3,7 @@ export const characters = [
     'å', 'ä', 'ö',
   ]
 
+  
   export const words = [
     { id: 1, word: 'telefon' },
     { id: 2, word: 'resväska' },
